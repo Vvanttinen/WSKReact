@@ -41,6 +41,7 @@ const mediaArray = [
 
 const Home = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  console.log('selectedItem', selectedItem);
   return (
     <>
       <h2>My Media</h2>
@@ -53,6 +54,7 @@ const Home = () => {
           <th>Created</th>
           <th>Size</th>
           <th>Type</th>
+          <th>Operations</th>
         </tr>
         </thead>
         <tbody>
