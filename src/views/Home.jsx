@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import MediaRow from './MediaRow';
-import SingleView from './SingleView';
+import MediaRow from '../components/MediaRow';
+import SingleView from '../components/SingleView';
 
 const mediaArray = [
   {
@@ -41,7 +41,6 @@ const mediaArray = [
 
 const Home = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-  console.log('selectedItem', selectedItem);
   return (
     <>
       <h2>My Media</h2>

@@ -147,9 +147,3 @@ button:hover {
   border-color: #0000ff;
   background-color: #242424;
 }
-
-.dialogBtn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
