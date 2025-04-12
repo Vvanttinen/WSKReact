@@ -1,11 +1,18 @@
+import {Route, BrowserRouter, Routes} from 'react-router';
 import './App.css';
-import Home from './components/Home';
+import Layout from './components/Layout';
+import Home from './views/Home';
+
 const App = () => {
   return (
-    <>
-      <h1>My App</h1>
-      <Home />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          {/* TODO: add missing routes */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 export default App;
