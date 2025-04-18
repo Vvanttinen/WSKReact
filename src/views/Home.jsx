@@ -1,52 +1,12 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import MediaRow from '../components/MediaRow';
 import SingleView from '../components/SingleView';
-import {fetchData} from "../utils/FetchData.js";
-import {uniqBy} from 'lodash';
+import {useMedia} from "../hooks/apiHooks.js";
 
 const Home = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [mediaArray, setMediaArray] = useState([]);
 
-  const getMedia = async () => {
-    try {
-      const mediaData = await fetchData(import.meta.env.VITE_MEDIA_API + '/media');
-
-      const uniqueUserIds = uniqBy(mediaData, 'user_id');
-
-      console.log('uniqueUserIds', uniqueUserIds);
-
-      const authApiUrl = import.meta.env.VITE_AUTH_API;
-
-      const userData = await Promise.all(
-        uniqueUserIds.map(
-          async (item) =>
-            await fetchData(`${authApiUrl}/users/${item.user_id}`),
-        ),
-      );
-      console.log('userData', userData);
-
-      const userMap = userData.reduce((map, {user_id, username}) => {
-        map[user_id] = username;
-        return map;
-      }, {});
-
-      const newData = mediaData.map((item) => ({
-        ...item,
-        username: userMap[item.user_id],
-      }));
-
-      setMediaArray(newData);
-    } catch (error) {
-      console.error('error', error);
-    }
-  };
-
-  useEffect(() => {
-    getMedia();
-  }, []);
-
-  console.log('mediaArray', mediaArray);
+  const {mediaArray} = useMedia();
 
   return (
     <>
@@ -76,4 +36,5 @@ const Home = () => {
     </>
   );
 };
+
 export default Home;
