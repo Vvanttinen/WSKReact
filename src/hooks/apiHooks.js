@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {fetchData} from "../utils/FetchData.js";
 import {uniqBy} from "lodash";
 
@@ -47,4 +47,76 @@ const useMedia = () => {
   return {mediaArray};
 };
 
-export {useMedia};
+const useAuthentication = () => {
+  const postLogin = async (inputs) => {
+    try {
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputs),
+      };
+      const loginResult = await fetchData(
+        import.meta.env.VITE_AUTH_API + '/auth/login',
+        fetchOptions,
+      );
+
+      console.log('loginResult', loginResult.token);
+
+      window.localStorage.setItem('token', loginResult.token);
+
+      return loginResult;
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
+  };
+
+  return {postLogin};
+};
+
+const useUser = () => {
+  const postUser = async (inputs) => {
+    try {
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(inputs),
+      };
+      return await fetchData(
+        import.meta.env.VITE_AUTH_API + '/users',
+        fetchOptions,
+      );
+    } catch (error) {
+      console.error('User registration failed:', error);
+    }
+  };
+
+  const getUserByToken = useCallback(async (token) => {
+    try {
+      const fetchOptions = {
+        headers: {
+          Authorization: 'Bearer: ' + token,
+        },
+      };
+
+      const userResult = await fetchData(
+        import.meta.env.VITE_AUTH_API + '/users/token',
+        fetchOptions,
+      );
+
+      console.log('userResult', userResult);
+
+      return userResult;
+    } catch (error) {
+      console.error('Fetching user by token failed:', error);
+    }
+  }, []);
+
+  return {getUserByToken, postUser};
+};
+
+export {useMedia, useAuthentication, useUser};
