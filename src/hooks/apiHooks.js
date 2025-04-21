@@ -2,6 +2,9 @@ import {useCallback, useEffect, useState} from "react";
 import {fetchData} from "../utils/FetchData.js";
 import {uniqBy} from "lodash";
 
+const authApiUrl = import.meta.env.VITE_AUTH_API;
+const mediaApiUrl = import.meta.env.VITE_MEDIA_API;
+
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
 
@@ -12,8 +15,6 @@ const useMedia = () => {
       const uniqueUserIds = uniqBy(mediaData, 'user_id');
 
       console.log('uniqueUserIds', uniqueUserIds);
-
-      const authApiUrl = import.meta.env.VITE_AUTH_API;
 
       const userData = await Promise.all(
         uniqueUserIds.map(
@@ -43,8 +44,24 @@ const useMedia = () => {
     getMedia();
   }, []);
 
-  console.log('mediaArray', mediaArray);
-  return {mediaArray};
+  const postMedia = async (file, inputs, token) => {
+    const data = {
+      ...inputs,
+      ...file,
+    };
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    return await fetchData(`${mediaApiUrl}/media`, fetchOptions);
+  };
+
+  return {mediaArray, postMedia};
 };
 
 const useAuthentication = () => {
@@ -119,4 +136,27 @@ const useUser = () => {
   return {getUserByToken, postUser};
 };
 
-export {useMedia, useAuthentication, useUser};
+const useFile = () => {
+  const postFile = async (file, token) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer: ' + token,
+      },
+      mode: 'cors',
+      body: formData,
+    };
+
+    return await fetchData(
+      import.meta.env.VITE_UPLOAD_SERVER + '/upload',
+      fetchOptions,
+    );
+  };
+
+  return {postFile};
+};
+
+export {useMedia, useAuthentication, useUser, useFile};
