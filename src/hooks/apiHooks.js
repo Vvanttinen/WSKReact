@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {fetchData} from "../utils/FetchData.js";
 import {uniqBy} from "lodash";
 
@@ -40,10 +40,6 @@ const useMedia = () => {
     }
   };
 
-  useEffect(() => {
-    getMedia();
-  }, []);
-
   const postMedia = async (file, inputs, token) => {
     const data = {
       ...inputs,
@@ -61,7 +57,37 @@ const useMedia = () => {
     return await fetchData(`${mediaApiUrl}/media`, fetchOptions);
   };
 
-  return {mediaArray, postMedia};
+  const deleteMedia = async (file, token) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    return await fetchData(`${mediaApiUrl}/media/${file.media_id}`, fetchOptions);
+  }
+
+  const modifyMedia = async (file, token) => {
+    const data = {
+      id: file.id,
+      title: file.title,
+      description: file.description,
+    };
+    const fetchOptions = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    return await fetchData(`${mediaApiUrl}/media/${file.media_id}`, fetchOptions);
+  }
+
+  return {mediaArray, getMedia, postMedia, deleteMedia, modifyMedia};
 };
 
 const useAuthentication = () => {
