@@ -38,49 +38,62 @@ const Upload = () => {
 
   return (
     <>
-      <h1>Upload</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            type="text"
-            id="title"
-            onChange={handleInputChange}
+      <div className="max-w-2xl mx-auto p-6 text-white">
+        <h1 className="text-3xl font-semibold text-center text-white my-6">Upload</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+            <input
+              name="title"
+              type="text"
+              id="title"
+              onChange={handleInputChange}
+              className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
+            <textarea
+              name="description"
+              rows={5}
+              id="description"
+              onChange={handleInputChange}
+              className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+
+          <div>
+            <label htmlFor="file" className="block text-sm font-medium mb-1">File</label>
+            <input
+              name="file"
+              type="file"
+              id="file"
+              accept="image/*, video/*"
+              onChange={handleFileChange}
+              className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <img
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : 'https://placehold.co/600x400?text=Choose+image'
+            }
+            alt="preview"
+            className="w-48 h-auto mx-auto my-4"
           />
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea
-            name="description"
-            rows={5}
-            id="description"
-            onChange={handleInputChange}
-          ></textarea>
-        </div>
-        <div>
-          <label htmlFor="file">File</label>
-          <input
-            name="file"
-            type="file"
-            id="file"
-            accept="image/*, video/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        <img
-          src={
-            file
-              ? URL.createObjectURL(file)
-              : 'https://placehold.co/600x400?text=Choose+image'
-          }
-          alt="preview"
-          width="200"
-        />
-        <button type="submit" disabled={!(file && inputs?.title.length > 3)}>
-          Upload
-        </button>
-      </form>
+
+          <button
+            type="submit"
+            disabled={!(file && inputs?.title.length > 3)}
+            className="w-full py-2 px-4 mt-4 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50"
+          >
+            Upload
+          </button>
+        </form>
+      </div>
     </>
   );
 };

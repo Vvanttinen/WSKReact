@@ -11,9 +11,10 @@ const Layout = () => {
   return (
     <div>
       <header>
-        <h1>My App</h1>
+        <h1 className="text-3xl font-semibold text-white text-center my-6">My App</h1>
         <nav>
-          <ul>
+          <ul className="list-none m-0 p-0 overflow-hidden bg-[#333] flex justify-end
+          *:block *:text-white *:text-center *:p-4 *:no-underline *:hover:bg-[#111]">
             <li>
               <Link to="/">Home</Link>
             </li>

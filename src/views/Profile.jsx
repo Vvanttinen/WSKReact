@@ -21,16 +21,18 @@ const Profile = () => {
   console.log('user', user);
   return (
     <>
-      <h2>Profile</h2>
-      {user && (
-        <>
-          <p>Username: {user.username}</p>
-          <p>Email: {user.email}</p>
-          <p>
-            Register Date: {new Date(user.created_at).toLocaleString('fi-FI')}
-          </p>
-        </>
-      )}
+      <div className="max-w-2xl mx-auto p-6 text-white">
+        <h2 className="text-3xl font-semibold text-center text-white my-6">Profile</h2>
+        {user && (
+          <div className="space-y-4 text-center">
+            <p className="text-lg">Username: <span className="font-semibold">{user.username}</span></p>
+            <p className="text-lg">Email: <span className="font-semibold">{user.email}</span></p>
+            <p className="text-lg">
+              Register Date: <span className="font-semibold">{new Date(user.created_at).toLocaleString('fi-FI')}</span>
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
 };
