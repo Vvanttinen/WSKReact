@@ -90,6 +90,62 @@ const useMedia = () => {
   return {mediaArray, getMedia, postMedia, deleteMedia, modifyMedia};
 };
 
+const useLike = () => {
+  const postLike = async (file, token) => {
+    const data = {
+      media_id: file.media_id,
+    };
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    return await fetchData(`${mediaApiUrl}/likes`, fetchOptions);
+  }
+
+  const deleteLike = async (likeId, token) => {
+    const data = {
+      id: likeId,
+    };
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    return await fetchData(`${mediaApiUrl}/likes/${likeId}`, fetchOptions);
+  };
+
+  const getLikesByMediaId = async (mediaId) => {
+    const fetchOptions = {
+      method: 'GET',
+    };
+
+    return await fetchData(`${mediaApiUrl}/likes/bymedia/${mediaId}`, fetchOptions);
+  }
+
+  const getLikesByUser = async (token) => {
+    const fetchOptions = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    return await fetchData(`${mediaApiUrl}/likes/user`, fetchOptions);
+  }
+
+  return {postLike, deleteLike, getLikesByMediaId, getLikesByUser};
+};
+
 const useAuthentication = () => {
   const postLogin = async (inputs) => {
     try {
@@ -185,4 +241,4 @@ const useFile = () => {
   return {postFile};
 };
 
-export {useMedia, useAuthentication, useUser, useFile};
+export {useMedia, useAuthentication, useUser, useFile, useLike};
